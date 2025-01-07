@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  @apply bg-gradient-to-r from-purple-300 from-10% via-purple-400 via-30% to-purple-500 to-90%;
+}
