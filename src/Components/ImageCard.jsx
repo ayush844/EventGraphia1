@@ -3,7 +3,7 @@ import React from "react";
 const ImageCard = ({ image, onClick }) => {
   return (
     <div
-      className="border rounded-lg overflow-hidden  hover:shadow-lg hover:shadow-black cursor-pointer hover:scale-105 transform transition duration-300 ease-in-out"
+      className="border rounded-lg overflow-hidden  hover:shadow-lg hover:shadow-black cursor-pointer hover:scale-105 transform transition duration-300 ease-in-out active:scale-95"
       onClick={onClick}
     >
       <img

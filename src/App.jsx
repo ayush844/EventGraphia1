@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import ImageCard from "./Components/ImageCard";
 import { HashLoader } from "react-spinners";
+import FullViewModal from "./Components/FullViewModal";
 
 function App() {
   const [images, setImages] = useState([]);
   const [lastImageIndex, setLastImageIndex] = useState(0); // track the index of the last fetched image
   const [loading, setLoading] = useState(false);
+
+  const [currentImage, setCurrentImage] = useState(null);
 
   // fetching the images
   const fetchImages = (count) => {
@@ -70,7 +73,7 @@ function App() {
   }, []);
 
   const openFullView = (image) => {
-    console.log(image.id);
+    setCurrentImage(image);
   };
 
   return (
@@ -89,6 +92,13 @@ function App() {
             />
           ))}
         </div>
+
+        {currentImage && (
+          <FullViewModal
+            image={currentImage}
+            onClose={() => setCurrentImage(null)}
+          />
+        )}
 
         {loading && <HashLoader color="#440080" />}
       </div>
