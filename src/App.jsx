@@ -96,6 +96,8 @@ function App() {
         {currentImage && (
           <FullViewModal
             image={currentImage}
+            images={images}
+            setCurrentImage={setCurrentImage}
             onClose={() => setCurrentImage(null)}
           />
         )}

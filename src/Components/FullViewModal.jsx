@@ -1,24 +1,61 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const FullViewModal = ({ image, onClose }) => {
-  if (!image) return null;
+const FullViewModal = ({ image, images, setCurrentImage, onClose }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    // index of the current image when the modal opens
+    const index = images.findIndex((img) => img.id === image.id);
+    setCurrentIndex(index);
+  }, [image, images]);
 
   const handleDownload = async () => {
     try {
-      const response = await fetch(image.download, { mode: "cors" }); // Fetch the image
-      const blob = await response.blob(); // Convert to blob
-      const url = window.URL.createObjectURL(blob); // Create a URL for the blob
+      const response = await fetch(image.download, { mode: "cors" });
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = "downloaded-image.jpg"; // Set filename for download
+      link.download = "downloaded-image.jpg";
       document.body.appendChild(link);
-      link.click(); // Trigger the download
+      link.click();
       document.body.removeChild(link);
-      window.URL.revokeObjectURL(url); // Clean up the object URL
+      window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Failed to download image:", error);
     }
   };
+
+  const navigateImages = (direction) => {
+    let newIndex = currentIndex;
+
+    if (direction === "prev") {
+      newIndex = currentIndex > 0 ? currentIndex - 1 : currentIndex;
+    } else if (direction === "next") {
+      newIndex =
+        currentIndex < images.length - 1 ? currentIndex + 1 : currentIndex;
+    }
+
+    setCurrentIndex(newIndex);
+    setCurrentImage(images[newIndex]);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "ArrowLeft") {
+        navigateImages("prev");
+      } else if (e.key === "ArrowRight") {
+        navigateImages("next");
+      } else if (e.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [currentIndex, images]);
 
   return (
     <div
@@ -27,20 +64,36 @@ const FullViewModal = ({ image, onClose }) => {
     >
       <div
         className="relative max-w-4xl w-full bg-purple-950 rounded-lg p-8"
-        onClick={(e) => e.stopPropagation()} // Prevent closing modal when clicking inside
+        onClick={(e) => e.stopPropagation()}
       >
         <img
-          src={image.fullView}
-          alt={image.alt || "Full View"}
+          src={images[currentIndex].fullView}
+          alt={images[currentIndex].alt || "Full View"}
           className="w-full h-auto rounded-md mb-4"
         />
 
-        <div className="flex justify-end text-center">
+        <div className="flex justify-between items-center text-center mt-4">
+          <button
+            onClick={() => navigateImages("prev")}
+            className="bg-gray-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-gray-700 transition disabled:opacity-55"
+            disabled={currentIndex === 0}
+          >
+            Previous
+          </button>
+
           <button
             onClick={handleDownload}
             className="bg-blue-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-700 transition"
           >
             Download
+          </button>
+
+          <button
+            onClick={() => navigateImages("next")}
+            className="bg-gray-600 text-white px-4 py-2 rounded-md shadow-md hover:bg-gray-700 transition disabled:opacity-55"
+            disabled={currentIndex === images.length - 1}
+          >
+            Next
           </button>
         </div>
       </div>
