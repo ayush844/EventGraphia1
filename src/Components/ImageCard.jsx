@@ -9,7 +9,7 @@ const ImageCard = ({ image, onClick }) => {
       <img
         src={image.thumbnail}
         alt={`Thumbnail ${image.id}`}
-        className="w-full h-36 md:h-40 lg:h-48 object-cover"
+        className="w-full h-14 md:h-40 lg:h-48 object-cover"
       />
     </div>
   );

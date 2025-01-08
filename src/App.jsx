@@ -83,7 +83,7 @@ function App() {
           Image Gallery
         </h1>
 
-        <div className="grid lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 grid-cols-2 gap-2 md:gap-4 lg:gap-10">
+        <div className="grid grid-cols-5 gap-2 md:gap-4 lg:gap-10">
           {images.map((image) => (
             <ImageCard
               key={image.id}
