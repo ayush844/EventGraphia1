@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 
-const FullViewModal = ({ image, images, setCurrentImage, onClose }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+const FullViewModal = ({
+  image,
+  images,
+  setCurrentImage,
+  onClose,
+  sendIndex,
+}) => {
+  const [currentIndex, setCurrentIndex] = useState(sendIndex);
 
   useEffect(() => {
     // index of the current image when the modal opens

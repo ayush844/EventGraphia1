@@ -11,6 +11,8 @@ function App() {
 
   const [currentImage, setCurrentImage] = useState(null);
 
+  const [sendIndex, setSendIndex] = useState(0);
+
   // fetching the images
   const fetchImages = (count) => {
     setLastImageIndex((prevLastIndex) => {
@@ -73,7 +75,9 @@ function App() {
   }, []);
 
   const openFullView = (image) => {
+    const index = images.findIndex((img) => img.id === image.id);
     setCurrentImage(image);
+    setSendIndex(index);
   };
 
   return (
@@ -98,6 +102,7 @@ function App() {
             image={currentImage}
             images={images}
             setCurrentImage={setCurrentImage}
+            sendIndex={sendIndex}
             onClose={() => setCurrentImage(null)}
           />
         )}
